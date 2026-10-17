@@ -1,0 +1,18 @@
+{
+  "kind": "human",
+  "subject": {"id": "gauss_jordan", "version": "0.1"},
+  "evaluatee": "demo-cadet",
+  "evaluator": "demo-evaluator@example",
+  "date": "2026-10-18",
+  "flag": "Ok",
+  "sections": [
+    {"name": "사전 확인", "result": "ok", "note": "norminette 통과, 재링크 없음, nm -u 확인"},
+    {"name": "1. 입력과 오류 처리", "result": "ok"},
+    {"name": "2. 기약 행 사다리꼴", "result": "ok", "note": "즉석 3x3 행렬 손으로 확인"},
+    {"name": "3. 계수와 행렬식", "result": "ok"},
+    {"name": "4. 역행렬", "result": "ok"},
+    {"name": "5. 견고함", "result": "ok", "note": "leaks 두 경로 확인, 곱셈 넘침은 나눗셈 비교로 감지"},
+    {"name": "6. 보너스", "result": "skipped", "note": "보너스 미제출"}
+  ],
+  "machine_record": "gauss_jordan-0.1-machine.json"
+}

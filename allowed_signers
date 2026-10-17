@@ -1,0 +1,4 @@
+# allowed_signers: trusted evaluator identities, one per line.
+# <identity> namespaces="community-subject" <key type> <base64 public key>
+# The key below is the DEMO key from demo/keys/. It proves nothing about anyone.
+demo-evaluator@example namespaces="community-subject" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKue2zrrg5t+QrhqNmAvYlSzeOF6Ahjwx8/PU1eu5hOI
