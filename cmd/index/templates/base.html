@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}} · 커뮤니티 과제</title>
+<link rel="stylesheet" href="{{.Root}}style.css">
+</head>
+<body>
+<header class="top">
+<a class="brand" href="{{.Root}}index.html">커뮤니티 과제</a>
+<nav>
+<a href="{{.Root}}index.html#subjects">과제</a>
+<a href="{{.Root}}index.html#records">기록</a>
+<a href="{{.Root}}index.html#rebuild">다시 만들기</a>
+</nav>
+</header>
+<main>
+{{template "main" .}}
+</main>
+<footer>
+<p>이 페이지는 저장소의 파일에서 생성되었다. 서버도 데이터베이스도 없다. <code>git clone</code> 한 뒤 <code>make site</code>를 실행하면 같은 페이지가 다시 나온다.</p>
+</footer>
+</body>
+</html>

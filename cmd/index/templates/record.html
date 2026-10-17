@@ -1,0 +1,46 @@
+{{define "main"}}
+{{with .Owner}}
+<p class="crumb"><a href="{{$.Root}}index.html">커뮤니티 과제</a> / 기록 / {{.Name}}</p>
+<h1>{{.Name}}의 기록</h1>
+<p class="lead">서명된 기록 {{len .Records}}건. 검증은 이 페이지를 생성할 때 <code>kit/record/verify.sh</code>로 했고, 서명자 신원은 서명 키를 <code>allowed_signers</code>에서 찾아 적었다. 파일을 내려받아 같은 명령으로 직접 확인할 수 있다.</p>
+
+{{range .Records}}
+<section class="record {{.Kind}}">
+<h2><span class="kind">{{kindName .Kind}}</span> <a href="{{$.Root}}subjects/{{.SubjectID}}/index.html">{{.SubjectID}}</a> v{{.SubjectVersion}}</h2>
+<table class="front">
+<tbody>
+<tr><th>종류</th><td>{{kindName .Kind}} 평가</td></tr>
+<tr><th>과제</th><td>{{.SubjectID}} v{{.SubjectVersion}}</td></tr>
+<tr><th>날짜</th><td>{{.Date}}</td></tr>
+<tr><th>서명자</th><td>{{if .Signer}}{{.Signer}}{{else}}알 수 없음{{end}}</td></tr>
+<tr><th>검증</th><td>{{if .OK}}<span class="ok">OK</span>{{else}}<span class="fail">FAIL</span>{{end}} <span class="note">{{.Note}}</span></td></tr>
+{{if eq .Kind "machine"}}
+<tr><th>결과</th><td>{{.Passed}} / {{.Total}} 통과{{if .Failed}}, {{.Failed}} 실패{{end}}</td></tr>
+{{with .Commit}}<tr><th>커밋</th><td><code>{{.}}</code></td></tr>{{end}}
+{{with .Uname}}<tr><th>환경</th><td>{{.}}</td></tr>{{end}}
+{{else}}
+<tr><th>플래그</th><td><b>{{.Flag}}</b></td></tr>
+{{end}}
+<tr><th>파일</th><td><a href="{{.File}}">{{.File}}</a> · <a href="{{.File}}.sig">{{.File}}.sig</a></td></tr>
+</tbody>
+</table>
+{{if .Sections}}
+<table class="sections">
+<thead><tr><th>섹션</th><th>결과</th><th>메모</th></tr></thead>
+<tbody>
+{{range .Sections}}
+<tr><td>{{.Name}}</td><td class="result-{{.Result}}">{{.Result}}</td><td>{{.Note}}</td></tr>
+{{end}}
+</tbody>
+</table>
+{{end}}
+</section>
+{{end}}
+
+<section id="verify">
+<h2>직접 검증하기</h2>
+<pre><code>{{range .Records}}kit/record/verify.sh records/{{.Owner}}/{{.File}} allowed_signers {{if .Signer}}{{.Signer}}{{else}}&lt;identity&gt;{{end}}
+{{end}}</code></pre>
+</section>
+{{end}}
+{{end}}

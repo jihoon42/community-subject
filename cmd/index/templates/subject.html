@@ -1,0 +1,46 @@
+{{define "main"}}
+{{with .Subject}}
+<p class="crumb"><a href="{{$.Root}}index.html">커뮤니티 과제</a> / {{.ID}}</p>
+<h1>{{.Title}}</h1>
+{{if .Subtitle}}<p class="lead">{{.Subtitle}}</p>{{end}}
+
+<section id="front">
+<h2>개요</h2>
+<table class="front">
+<tbody>
+{{range .Front.Fields}}
+<tr><th>{{.Key}}</th><td>{{.Value}}</td></tr>
+{{end}}
+<tr><th>source</th><td><code>{{.Dir}}/SUBJECT.md</code></td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="status">
+<h2>현황</h2>
+<p class="counts"><span>완료 <b>{{.Completed}}</b>명</span> <span>사람 평가 <b>{{.HumanCount}}</b>건</span> <span>기계 평가 <b>{{.MachineCount}}</b>건</span></p>
+<p class="note">건수만 적는다. 누가 누구를 평가했는지는 이 페이지에 드러내지 않는다. 기록은 피평가자가 자기 기록 페이지에서 가진다.</p>
+</section>
+
+<section id="kit">
+<h2>기계 평가 키트</h2>
+<p>사람 평가 전에 기계가 확인할 수 있는 부분은 저장소의 <code>kit/</code>로 돌린다. 테스트는 과제와 함께 배포되므로 서버 없이 어디서나 같은 케이스가 돌아간다. 러너에 제출물을 실행하는 명령을 문자열 하나로 넘기면 케이스별 PASS/FAIL과 <code>result.json</code>이 나온다.</p>
+<pre><code># 제출 저장소 안에서, 빌드한 뒤
+SUBJECT=&lt;이 저장소&gt;/{{.Dir}}/SUBJECT.md &lt;이 저장소&gt;/kit/tests/run.sh ./{{.ID}}
+
+# 결과를 자기 키로 서명하고, 누구나 공개키 한 줄로 검증한다
+kit/record/sign.sh result.json &lt;intra&gt;@&lt;campus&gt;
+kit/record/verify.sh result.json allowed_signers &lt;intra&gt;@&lt;campus&gt;</code></pre>
+<p>제출물이 없어도 참조 구현으로 같은 흐름을 볼 수 있다. 저장소 루트에서 <code>SUBJECT={{.Dir}}/SUBJECT.md kit/tests/run.sh "python3 kit/tests/reference.py"</code>를 실행한다. 기계가 보는 것은 빌드, 출력 비교, 종료 상태이고, 설명과 설계 선택과 보너스는 사람이 본다.</p>
+</section>
+
+<section id="flow">
+<h2>평가 흐름</h2>
+<p>피평가자는 과제 id와 버전을 골라 자기 저장소에서 작업하고, 기계 평가로 먼저 확인한다. 그다음 평가 슬롯은 Telecadeta에서 열고 어느 캠퍼스 카뎃이든 예약한다. 화상이면 코드와 터미널을 화면 공유로 보이고, 평가자는 아래 평가표의 사람 항목을 본다. 평가가 끝나면 평가자는 결과(과제 id와 버전, 피평가자, 평가자, 날짜, 플래그, 섹션별 결과)를 JSON으로 적어 자기 SSH 키로 서명해 피평가자에게 준다. 기록에는 42 슬롯 id나 평가 일정이 들어가지 않는다.</p>
+</section>
+
+<article class="body" id="body">
+{{.Body}}
+</article>
+{{end}}
+{{end}}
