@@ -28,7 +28,7 @@ kit/                    기계 평가 키트: tests/run.sh, record/sign.sh, reco
 subjects/<id>/          과제 하나. SUBJECT.md(프런트매터 + 본문)와 선택적 tests/
 records/<피평가자>/      서명된 기록. <이름>.json 과 <이름>.json.sig 가 짝이다
 allowed_signers         검증에 쓰는 신뢰 서명자 목록(OpenSSH allowed_signers 형식)
-demo/keys/              데모 키. 아래 참고
+demo/keys/              데모 키의 공개키. 개인키는 저장소에 없다. 아래 참고
 cmd/index/              생성기. 템플릿(html/template)과 CSS를 포함한다
 scripts/verify-all.sh   모든 기록을 검증한다(make verify)
 site/public/            생성 결과. Git에 넣지 않는다
@@ -69,7 +69,7 @@ make verify          # records/ 아래 모든 기록을 한 번에
 
 ### 데모 키
 
-`demo/keys/demo_evaluator_ed25519`는 이 저장소의 샘플 기록을 서명하려고 `ssh-keygen -t ed25519`로 새로 만든 **데모 키**다. 신원은 `demo-evaluator@example`, 비밀번호는 없고, 비밀키가 저장소에 들어 있으므로 아무것도 증명하지 않는다. 실제 기록은 자기 SSH 키로 서명하고, `allowed_signers`에서 데모 줄은 지운다. 샘플 기록 둘(`records/demo-cadet/`)은 이 키로 서명했고, 기계 기록은 키트의 참조 구현을 돌린 결과다.
+`demo/keys/demo_evaluator_ed25519.pub`는 이 저장소의 샘플 기록을 서명한 **데모 키**의 공개키다. 신원은 `demo-evaluator@example`이고, `allowed_signers`의 데모 줄이 이 키다. 데모 신원이므로 누구에 대해서도 아무것도 증명하지 않는다. 개인키는 저장소에 없다. 샘플 기록을 고쳐서 다시 서명하려면 각자의 SSH 키로 서명하고, 그 공개키 한 줄을 `allowed_signers`에 넣는다. 실제 기록도 자기 SSH 키로 서명하고, `allowed_signers`에서 데모 줄은 지운다. 샘플 기록 둘(`records/demo-cadet/`)은 데모 키로 서명했고, 기계 기록은 키트의 참조 구현을 돌린 결과다.
 
 ## Telecadeta와의 관계
 

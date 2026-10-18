@@ -1,0 +1,46 @@
+# Build the static index and publish it with GitHub Pages.
+#
+# make verify runs first so that a record whose signature does not verify
+# (or a runner without ssh-keygen) fails the build instead of being
+# published as FAIL.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Verify every record signature
+        run: make verify
+      - name: Build the site
+        run: make site
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

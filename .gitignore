@@ -1,3 +1,4 @@
 site/public/
 kit/tests/result.json
 kit/tests/result.json.sig
+demo/keys/*_ed25519
